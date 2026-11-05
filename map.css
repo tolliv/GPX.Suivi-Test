@@ -1,0 +1,44 @@
+/* v=2611.03a */
+
+/* Conteneur global */
+.custom-popup
+{
+}
+
+/* Le wrapper */
+.custom-popup .leaflet-popup-content-wrapper {
+    background: #FFC;
+    color: #FFC;
+    border-radius: 8px; /* Coins arrondis ou 0 pour un rectangle */
+    padding: 4px;
+    border: 1px solid #CCC;
+}
+
+/* La petite flèche en bas de la bulle */
+.custom-popup .leaflet-popup-tip
+{
+    background: #FFC;
+    border: 1px solid #CCC;
+}
+
+/* Le contenu texte */
+.custom-popup .leaflet-popup-content
+{
+    font-family: 'Verdana';
+    margin: 5px;
+    color: #000;
+    overflow-y: auto;
+    white-space: normal;
+}
+
+/* La carte prend tout l'espace restant */
+#map
+{
+  box-sizing: border-box;
+  margin: 0px;
+  width: 100%;
+  flex: 1;
+  border-radius: 0px;
+  border: 2px solid #CCC;
+  z-index: 1; /* map */
+}

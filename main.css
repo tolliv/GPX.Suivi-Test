@@ -1,0 +1,516 @@
+/* v=2611.03a */
+/*==================================================================================================
+  Il y a deux parties :
+  #panTopContainer pour la partie haute de l'écran
+  #panBottomContainer pour la partie basse de l'écran
+
+  La partie basse sert à trouver la dimension pour la partie haute
+==================================================================================================*/
+
+/* Taille générale du texte */
+body
+{
+  font-family: verdana;
+  font-size: 13px;
+}
+
+/* Taille de texte plus petite */
+.classTextePetit
+{
+  font-size: 0.9em; /* 10% plus petit que la normale */
+}
+
+/* Taille de texte plus grande */
+.classTexteLarge
+{
+  font-size: 1.2em; /* 20% plus grand que la normale */
+}
+
+/*================================================================================================*/
+/* Partie Haute de l'écran                                                                        */
+/*================================================================================================*/
+
+/* Conteneur haut de page */
+#panTopContainer
+{
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 0px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Panel de démmarage */
+#panDemarrage
+{
+  margin-left: 10px;
+ text-align: center;
+}
+
+/* Eléments pendant le démarrage */
+#txtTitreGPXSuivi
+{
+  font-size: 1.8em;
+  text-align: center;
+}
+
+#imgGPXSuivi
+{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 296px;
+  width: 100%;
+  height: auto;
+}
+
+/* Conteneur principal une fois la connexion faite */
+#panAffichagePrincipal
+{
+  display: none;
+  flex-direction: column;
+  height: 100vh;
+  margin-top: 48px;
+}
+
+#txtTitre
+{
+  background-color: #FFF;
+  font-weight: bold;
+}
+
+/*----- Boutons et menus -------------------------------------------------------------------------*/
+
+/* Conteneur des boutons et menus */
+#panButtonsMenu
+{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 10px;
+  padding: 5px;
+  border-bottom: 1px solid #444;
+  background-color: #CCC;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 32px;
+  z-index: 1000; /* Panel des boutons et menu */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Boutons pour le mode User */
+.classBoutonsUser
+{
+  height: 32px;
+  border-radius: 5px;
+  width: 80px;
+  font-family: 'Verdana';
+  font-size: 13px;
+  z-index: 2; /* Boutons User */
+  box-shadow: none;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+
+/* Boutons pour le mode Admin */
+.classBoutonsAdmin
+{
+  height: 32px;
+  border-radius: 5px;
+  width: 80px;
+  font-family: 'Verdana';
+  font-size: 13px;
+  z-index: 2; /* Boutons Admin */
+  box-shadow: none;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+
+/* Menu pour le choix de la carte */
+#panChoixCarte
+{
+  display: none;
+  position: fixed;
+  background: #FFF;
+  border: 1px solid #888;
+  border-radius: 5px;
+  overflow: hidden;
+  padding: 5px;
+  margin: 0px;
+  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.4);
+  z-index: 1000; /* Panel choix carte */
+}
+
+/* Radiobuttons pour pouvoir les centrer */
+#panChoixCarte input[type="radio"]
+{
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+  left: -3px;
+}
+
+/* Texte du menu */
+.classTexteMenu
+{
+  margin-top: 6px;
+  margin-bottom: 5px;
+}
+
+/* Panneau des commandes admin */
+#panAdminCommandes
+{
+  display: none;
+  position: fixed;
+  background: #FFF;
+  border: 1px solid #888;
+  z-index: 1001; /* Panel Admin */
+  border-radius: 5px;
+  overflow: hidden;
+  padding: 10px;
+  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.4);
+  left: 10px;
+  width: 300px;
+  bottom: 10px;
+  overflow-y: auto;
+}
+
+/* Sous-titre du menu admin */
+.classAdminSTitre
+{
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+  left: 5px;
+  width: 140px;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+/* Info du menu admin */
+.classAdminInfo
+{
+  display: inline-block;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+  padding-top: 2px;
+  left: 5px;
+  height: 20px;
+  width: 140px;
+  border: 1px solid #FFF;
+  background-color: #FFF;
+}
+
+/* Input du menu admin */
+.classAdminInput
+{
+  position: relative;
+  margin: 0px;
+  left: 5px;
+  width: 140px;
+  color: #000;
+  font-family: verdana;
+  font-size: 13px;
+}
+
+/* Boutons du menu admin */
+.classAdminBouton
+{
+  position: absolute;
+  left: 165px;
+  width: 80px;
+  font-family: verdana;
+  font-size: 13px;
+  background-color: #DDD;
+  box-shadow: none;
+  border-radius: 5px;
+  padding: 2px;
+  cursor: pointer;
+  border: 1px solid #CCC;
+  box-sizing: border-box;
+}
+
+
+
+/*----- Admin ------------------------------------------------------------------------------------*/
+
+/* Container pour l'identification de l'admin */
+#panAdminConnexion
+{
+  display: none;
+  margin-top: 0px;
+}
+
+/* Texte sur les informations de connexion */
+#txtAdmin
+{
+  margin-left: 10px;
+}
+
+/* Position du titre de la zone de saisie */
+.classSaisieTitre
+{
+  width: 100%;
+  margin-left: 10px;
+  margin-bottom: 2px;
+  font-weight: bold;
+}
+
+/* Position du texte de la zone de saisie */
+.classSaisieTexte
+{
+  width: 90%;
+  max-width: 500px;
+  margin-left: 10px;
+}
+
+/* Bouton valider les informations de connexion */
+#butAdminValider
+{
+  margin-left: 10px;
+}
+
+#txtValiderErreur
+{
+  margin-left: 10px;
+}
+
+/*----- Chargement -------------------------------------------------------------------------------*/
+
+/* Container pour le chargement*/
+#panChargement
+{
+  display: none;
+  positions: absolute;;
+  top: 60px;
+  left: 5px;
+  width: 300px;
+  height: 100px;
+  border: 1px solid #FFF;
+  box-sizing: border-box;
+  padding-bottom: 20px;
+}
+
+
+/*----- Avancement progression -------------------------------------------------------------------*/
+
+#panAllProgression
+{
+  border: 2px solid #FFF;
+  border-radius: 2px;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* Pourcentage de l'avancement */
+#txtPourcentage
+{
+  color: #FFF;
+  background-color: #008;
+  font-weight: bold;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 2px;
+  border-radius: 10px;
+  opacity: 0;
+  width: 60px;
+}
+
+/* Conteneur pour la progression */
+#panProgression
+{
+  display: block;
+  border: 0px solid #FFF; /* 0 pour le rendre transparent */
+  box-sizing: border-box;
+}
+
+/* Conteneur global de la barre */
+#progression-container
+{
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: 13px;
+  margin-right: 13px;
+  margin-top: 65px;
+}
+
+/* Affichage de la date */
+#txtHeurePosition
+{
+  position: absolute;
+  left: 0%;
+  width: 100px;
+  border: 1px solid #444;
+  border-radius: 10px;
+  background-color: #FFC;
+  transform: translate(-50%, -35px);
+  font-size: 1em;
+  font-weight: normal; /* ou bold */
+  opacity: 0;
+  text-align: center;
+  padding: 3px;
+}
+
+/* Curseur progression */
+#imgCurseur
+{
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  left: 0%;
+  top: -13px;
+  transform: translateX(-50%);
+  z-index: 3; /* Curseur progression */
+  opacity: 0;
+  transition: left 0.5s ease;
+  margin-bottom: 0px;
+}
+
+/* La ligne horizontale Restant */
+#progression-track
+{
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  border-bottom: 4px solid #888;
+  radius: 4px;
+  z-index: 1; /* Ligne restante */
+}
+
+/* La ligne horizontale Parcouru */
+#progression-fill
+{
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  width: 0%;
+  border-bottom: 4px solid #00F;
+  radius: 4px;
+  transition: width 0.5s ease;
+  z-index: 2; /* Ligne trait plein */
+}
+
+/* Labels de distance sous la barre de progression */
+#progression-labels
+{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 13px;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+/* Distances */
+#divDistances
+{
+  text-align: center;
+  color: #000;
+  padding: 5px;
+  margin-left: 0px;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  height: 22px;
+  border: 1px solid #CCC;
+  border-radius: 5px;
+  background-color: #EEE;
+  opacity: 1;
+}
+
+#txtDistanceParcourue
+{
+  height: 22px;
+  border-bottom: 3px solid #00F;
+}
+
+#txtDistanceRestante
+{
+  height: 22px;
+  border-bottom: 3px solid #888;
+}
+
+
+/* Panel pour les boutons sur la map */
+#panBoutonsPositions
+{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  margin: 0px;
+  margin-left: 20px;
+  padding-top: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 2px;
+  z-index: 2; /* panel des boutons sur la carte */
+  border: 2px solid #AAA;
+  box-sizing: border-box;
+  background-color: #FFF;
+  border-radius: 5px;
+  width: 250px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Radiobuttons pour pouvoir les centrer */
+#panBoutonsPositions input[type="radio"]
+{
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+  left: -1px;
+}
+
+
+/*----- Partager ------------------------------------------------------------------------------------*/
+
+
+/*================================================================================================*/
+/* Partie basse de l'écran                                                                        */
+/*================================================================================================*/
+
+/* Container Bas de page */
+#panBottomContainer
+{
+  position: fixed;
+  bottom: 0px;
+  left: 5px;
+  right: 5px;
+  height: 28px;
+  bottom: 0px;
+  background-color: #FFF;
+  border: 1px solid #FFF;
+  box-sizing: border-box;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  z-index: 1; /* Bottom container */
+}
+
+/* Texte bas de page */
+/* Invisible par défaut pour avoir le redimensionnement automatique */
+#spanBottom
+{
+  opacity: 0;
+  background-color: #FFF;
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+  margin-top: 2px;
+}
