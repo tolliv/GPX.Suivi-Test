@@ -1,0 +1,181 @@
+<!-- v=2611.03a -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>GPX.Suivi</title>
+  <meta charset='UTF-8'>
+</head>
+<body>
+  <!-- REF EXT START -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel='stylesheet' href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'/>
+  <script src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'></script>
+  <!-- REF EXT STOP -->
+
+  <!-- REF INT START -->
+  <script src='map.js?v=2611.03a'> </script>
+  <link rel='stylesheet' type='text/css' href='map.css?v=2611.03a'>
+  <script src='main.js?v=2611.03a'></script>
+  <link rel='stylesheet' type='text/css' href='main.css?v=2611.03a'>
+  <script src='driverSupabase.js?v=2611.03a'></script>
+  <!-- REF INT STOP -->
+
+
+  <!----- CONTAINER TOP --------------------------------------------------------------------------->
+  <div id='panTopContainer'>
+
+    <!----- PARTIE Informations de connexion pour Admin ----->
+    <div id='panDemarrage'>
+      <div id='txtTitreGPXSuivi'><b>GPX.Suivi</b><br></div>
+      <img id='imgGPXSuivi' src='imgGPXSuivi.png?v=2611.03a'>
+      <div id='txtDemarrage'><b>Lecture des informations en cours ..</b></div>
+
+      <!----- PARTIE Informations de connexion pour Admin ----->
+      <div id='panAdminConnexion'>
+        <div id='txtAdmin'></div>
+        <div style='height: 20px;'></div>
+        <div class='classSaisieTitre' >Adresse URL</div>
+        <input class='classSaisieTexte' id='txtUrl' type='text' placeholder="htpps://..."><br>
+        <div style='height: 15px;'></div>
+        <div class='classSaisieTitre' >Clé</div>
+        <input class='classSaisieTexte' id='txtKey' type='text' placeholder="sb_publishable..."><br>
+        <div style='height: 15px;'></div>
+        <div class='classSaisieTitre' >Numéro utilisateur</div>
+        <input class='classSaisieTexte' id='txtUsr' type='text' placeholder="(6 chiffres)"><br>
+        <div style='height: 20px;'></div>
+        <button id='butAdminValider' onclick='ValiderAdmin()' title="Valider les informations de connexion">Valider</button>
+        <div style='height: 20px;'></div>
+        <div id='txtValiderErreur'></div>
+      </div>
+
+    </div>
+
+
+    <!---------- AFFICHAGE PRINCIPAL (après démarrage) ---------->
+    <div id='panAffichagePrincipal'>
+
+      <!----- PARTIE Boutons et menu ----->
+      <div id='panButtonsMenu'>
+
+        <!-- Boutons sur la barre du haut -->
+        <div id='panBoutonsDuHaut'>
+          <button id='butRafraichir' class='classBoutonsUser' onclick='Rafraichir("partial")' title="Rafraichir les données">Rafraichir</button>
+          <button id='butChoixCarte' class='classBoutonsUser' onclick='ChoixCarte()' title="Changer de carte">Carte</button>
+          <button id='butPartager' class='classBoutonsUser' onclick='Partager()' title="Partager le lien">Partager</button>
+          <button id='butAdmin' class='classBoutonsAdmin' onclick='ButAdminClick()' style='display: none;'title='TODO'>Admin</button>
+          <br>
+          <button id='butAdminAddPoint' onclick='ButAdminTstAddPoint()' style='display: none;'title='Ajoute un point'>+1</button>
+        </div>
+
+        <!-- Menu Admin -->
+        <div id='panAdminCommandes'>
+          <div style='color: #008;'><b>Itinéraire</b></div>
+          <br>
+          <div class='classAdminSTitre'>Tracé</div>
+            <button id='butAdminCharger' class='classAdminBouton' onclick='ButAdminChargerClick()' style='left: 15px;'>Charger</button>
+            <span id='txtAdminNbPoints' style='position: relative; left: 100px; top: 3px; border: 1px solid #FFF;'></span>
+          <br>
+          <br>
+          <div class='classAdminSTitre'>Nom actuel</div>
+          <input id='txtAdminNomItineraire' class='classAdminInput' type='text' placeholder="">
+          <button id='butAdminModifierNom' class='classAdminBouton' onclick='ButAdminModifierNomClick()'>Modifier</button><br>
+          <br>
+          <div class='classAdminSTitre'>Informations</div>
+          <span class='classAdminInfo'>Itinéraire + Positions</span>
+          <button id='butAdminEffacer' class='classAdminBouton' onclick='ButAdminEffacerClick()'>Effacer</button>
+
+          <div style='height: 1px;border-bottom: 1px solid #CCC;margin-top: 20px;margin-bottom: 20px;'></div>
+
+          <div style='color: #008;'><b>Autres</b></div>
+          <br>
+          <div class='classAdminSTitre'>Prénom</div>
+          <input id='txtAdminPrenom' class='classAdminInput' type='text' placeholder="">
+          <button id='butAdminModifierPrenom' class='classAdminBouton' onclick='ButAdminModifierPrenomClick()'>Modifier</button><br>
+          <br>
+          <br>
+          La mise à jour sera faite à la fermeture de ce menu.
+        </div>
+
+        <!-- Menu pour la carte avec Radio Buttons -->
+        <div id="panChoixCarte">
+          <label><input type="radio" class='classTexteMenu' id='idOsm' name="fondCarte" onclick="SelectionnerFond('osm')" checked>OpenStreetMap&nbsp;
+          </label><br>
+          <label><input type="radio" class='classTexteMenu' id='idTopo' name="fondCarte" onclick="SelectionnerFond('topo')">OpenTopMap
+          </label><br>
+          <label><input type="radio" class='classTexteMenu' id='idIgnPlan' name="fondCarte" onclick="SelectionnerFond('ignPlan')">IGN Plan
+          </label><br>
+          <label><input type="radio" class='classTexteMenu' id='idSatellite' name="fondCarte" onclick="SelectionnerFond('satellite')">Satellite
+          </label>
+        </div>
+
+        <!-- Boutons choix affichage positions -->
+        <div id='panBoutonsPositions'>
+          <b>Position :</b>
+          <label><input type="radio" class='classTexteMenu' id='idPositionLast' name="ChoixAffichagePositions" onclick="SelectionnerChoixPosition('last')" checked>Dernière</label>
+          <label><input type="radio" class='classTexteMenu' id='idPositionAll' name="ChoixAffichagePositions" onclick="SelectionnerChoixPosition('all')">Toutes</label>
+        </div>
+
+      </div>
+
+      <!----- PARTIE Titre ----->
+      <div id='panTitreSuivi' style='font-size: 1.8em;'>
+        Suivi de
+        <span id='txtTitre'></span>
+        <span id='txtPrenom' style='opacity: 0;'>&nbsp;</span>
+        <span id='txtPourcentage'></span>
+      </div>
+
+      <!----- PARTIE Progression (Nom itinéraire + position + distances) ----->
+      <div id='panAllProgression'>
+
+        <!----- PARTIE Nom de l'itinéraire ----->
+        <div id='txtNomItineraire' style='display: none;'>Itinéraire</div>
+
+        <!----- PARTIE Progression ----->
+        <div id='panProgression'>
+          <div id='progression-container'>
+            <span id='spanDeplacementCurseur'><img id='imgCurseur'></span>
+            <span id='txtHeurePosition'></span>
+            <div id='progression-track'></div>
+            <div id='progression-fill'></div>
+          </div>
+          <div id="progression-labels">
+            <span id='spanDistanceMin' onclick="PasseAdminOn();">0km</span><span id='spanDistanceMax' onclick='PasseAdminOff();'>0km</span>
+          </div>
+          <div id="divDistances">
+            <span id='txtDistanceParcourue'></span>
+            &nbsp;&nbsp;-&nbsp;&nbsp;
+            <span id='txtDistanceRestante'></span>
+          </div>
+        </div>
+      </div>
+
+      <!----- PARTIE Map ----->
+      <div id='map'></div>
+
+      <!----- PARTIE Chargement ----->
+      <div id='panChargement'>
+      </div>
+
+    </div>
+  </div>
+
+  <!----- CONTAINER BOTTOM ------------------------------------------------------------------------>
+  <div id='panBottomContainer'>
+    <span id='spanBottom' class='classTextePetit'>
+      <span><b>Légende</b>&nbsp;&nbsp;</span>
+      <img id='imgLegendeDebut'>
+      <span>&nbsp;Début&nbsp;&nbsp;&nbsp;</span>
+      <img id='imgLegendePosition'>
+      <span>&nbsp;Position&nbsp;&nbsp;&nbsp;</span>
+      <img id='imgLegendeBivouac'>
+      <span>&nbsp;Bivouac&nbsp;&nbsp;&nbsp;</span>
+      <img id='imgLegendeFin'>
+      <span>&nbsp;Fin</span>
+    </span>
+  </div>
+
+</body>
+</html>
+
